@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+        <form method="POST" action="/signin">
+            <div class="form-group">
+                <label for="exampleInputEmail">Email address</label>
+                <input 
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    name="email"
+                />
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input 
+                    type="password"
+                    class="form-control"
+                    id="pass"
+                    placeholder="Password"
+                    name="pass"
+                />
+            </div>
+            <button type="button" id="myButton" class="btn btn-primary">Submit</button>
+            <div id="status" class="form-group"></div>
+        </form>
+    </div>
+    <script>
+        window.onload = () => {
+            let sendButton = document.getElementById("myButton");
+            sendButton.addEventListener('click', () => {
+                let email = document.getElementById("email").value;
+                let pass = document.getElementById("pass").value;
+
+                // Send POST request using Axios
+                axios.post('/signin', {
+                    email: email,
+                    pass: pass
+                })
+                .then(response => {
+                    document.getElementById("status").innerHTML = response.data;
+                    console.log(response.data);
+                    
+                    if (response.data === "SUCCESS") {
+                        console.log('true');
+                        window.location = "/studentpages"
+                    }
+                })
+                .catch(error => {
+                    console.error("There was an error!", error);
+                    document.getElementById("status").innerHTML = "An error occurred. Please try again.";
+                });
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+    <script>
+        window.onload = () => {
+            let sendButton = document.getElementById("myButton");
+            sendButton.addEventListener('click', () => {
+                let email = document.getElementById("email").value;
+                let pass = document.getElementById("pass").value;
+
+                const xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = () => {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        document.getElementById("status").innerHTML = xmlhttp.responseText;
+                        console.log(xmlhttp.responseText);
+                        
+                        if (xmlhttp.responseText === "SECRET PAGE") {
+                            console.log('true');
+                            window.open("./secretpage.html");
+                        }
+                    }
+                };
+
+                // Send AJAX request, type in POST
+                xmlhttp.open("POST", "/signin", true);
+                // Set the request header
+                xmlhttp.setRequestHeader(
+                    'Content-Type',
+                    'application/x-www-form-urlencoded'
+                );
+                // Send the request with encoded data
+                xmlhttp.send("email=" + encodeURIComponent(email) + "&pass=" + encodeURIComponent(pass));
+            });
+        };
+    </script>
+    <body>
+        <div>
+            <form method="POST" action="/signin">
+                <div class="form-group">
+                    <label for="exampleInputEmail">Email address</label>
+                    <input 
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter email"
+                        name="email"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input 
+                        type="password"
+                        class="form-control"
+                        id="pass"
+                        placeholder="Password"
+                        name="pass"
+                    />
+                </div>
+                <button type="button" id="myButton" class="btn btn-primary">Submit</button>
+                <div id="status" class="form-group"></div>
+            </form>
+        </div>
+    </body>
+</html>
